@@ -8,7 +8,7 @@ ROUTES
 6. Any user can retrieve the comments for a given link.
 
 USERS TABLE
-id | username | email | userpassword(encrypted) | usersalt
+id | username | email | user_password(encrypted) | usersalt
 
 LINKS TABLE
 id | title | destination_url | user that posted it
