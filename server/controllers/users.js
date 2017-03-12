@@ -1,4 +1,5 @@
 const Users = require("../models").Users;
+const Links = require("../models").Links;
 const bcrypt = require("bcryptjs");
 const jwt = require("jwt-simple");
 const appSecrets = require("../config/secrets");
@@ -49,8 +50,13 @@ module.exports = {
              }
           })
            .catch(error => res.status(400).send(error));
-        }
+        },
 
+  retrieveAll (req, res){
+    Links.findAll()
+    .then(contacts => res.status(201).send(contacts))
+    .catch(error => res.status(400).send(error));
+  },
 
 };
 
