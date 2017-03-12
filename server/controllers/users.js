@@ -1,12 +1,19 @@
 const Users = require("../models").Users;
+const bcrypt = require("bcryptjs");
 
 module.exports = {
 
   create (req, res) {
+      var salt = bcrypt.genSaltSync(10);
+      console.log(salt);
+      var hashedPass = bcrypt.hashSync(req.body.user_password, salt);
+      console.log(hashedPass)
         Users.create({
         username: req.body.username,
         email: req.body.email,
-        user_password: req.body.user_password,
+        user_password: hashedPass,
+        user_salt: salt,
+        //user_password: req.body.user_password,
       })
       .then(contacts => res.status(201).send(users))
       .catch(error => res.status(400).send(error));
