@@ -3,6 +3,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 
 const routes = require('./server/routes');
+const middleware = require('./server/middleware');
 
 // Set up the express app
 const app = express();
@@ -13,6 +14,9 @@ app.use(logger('dev'));
 // Parse incoming requests data (https://github.com/expressjs/body-parser)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Define any custom middleware before our routes.
+app.use(middleware.authenticate);
 
 // Add our routes to the app.
 routes(app);

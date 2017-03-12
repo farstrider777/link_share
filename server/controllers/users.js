@@ -39,6 +39,11 @@ module.exports = {
             if (input === user.user_password) {
                var token = jwt.encode({ id: user.id, name: user.username }, appSecrets.jwtSecret);
                return res.status(200).send(token);
+               var json = {
+                 user: user,
+                 token: token
+               };
+               return res.status(200).send(json);
              } else {
                return res.status(401).send({ message: "No such email or wrong password." });
              }
