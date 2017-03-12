@@ -39,7 +39,7 @@ module.exports = {
              console.log(`hashed input: ${input}, stored password: ${user.user_password}`);
             if (input === user.user_password) {
                var token = jwt.encode({ id: user.id, name: user.username }, appSecrets.jwtSecret);
-               return res.status(200).send(token);
+               //return res.status(200).send(token);
                var json = {
                  user: user,
                  token: token
@@ -54,6 +54,23 @@ module.exports = {
 
   retrieveAll (req, res){
     Links.findAll()
+    .then(contacts => res.status(201).send(contacts))
+    .catch(error => res.status(400).send(error));
+  },
+
+  submitLink (req, res){
+    var token = req.headers['access-token'];
+    var decoded = jwt.decode(token, appSecrets.jwtSecret);
+    var userId = decoded.id;
+
+    Links.create({
+    title: req.body.title,
+    destination_url: req.body.destination_url,
+
+
+    user_id: userId,
+    //user_password: req.body.user_password,
+  })
     .then(contacts => res.status(201).send(contacts))
     .catch(error => res.status(400).send(error));
   },

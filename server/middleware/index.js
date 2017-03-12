@@ -1,7 +1,7 @@
 const jwt = require("jwt-simple");
 const appSecrets = require("../config/secrets");
-//const User = require("../models/users");
-const User = require("../models").User;
+const User = require("../models").Users;
+
 
 module.exports = {
    authenticate (req, res, next) {
@@ -19,7 +19,6 @@ module.exports = {
           try {
             var decoded = jwt.decode(token, appSecrets.jwtSecret);
             var userId = decoded.id;
-
             // If decoding the token was successful,
             // look up the user from the token Id.
             User.findById(userId).then(user => {
