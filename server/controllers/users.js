@@ -19,7 +19,7 @@ module.exports = {
         user_salt: salt,
         //user_password: req.body.user_password,
       })
-      .then(contacts => res.status(201).send(users))
+      .then(users => res.status(201).send(users))
       .catch(error => res.status(400).send(error));
     },
 
@@ -54,10 +54,12 @@ module.exports = {
         },
 
   retrieveAll (req, res){
-    Links.findAll()
-    .then(contacts => res.status(201).send(contacts))
+    Links.findAll({order: '`id` DESC'})
+    .then(links => res.status(201).send(links))
     .catch(error => res.status(400).send(error));
   },
+
+  //Model.findAll({ where: { age: { gt: 12 } } })
 
   submitLink (req, res){
     var token = req.headers['access-token'];
@@ -85,6 +87,13 @@ module.exports = {
     })
     .then(contacts => res.status(201).send(contacts))
     .catch(error => res.status(400).send(error));
+  },
+
+  retrieveComments (req, res){
+    console.log("hello")
+    console.log(Comments.findById(req.params.link_id))
+    // .then(contacts => res.status(201).send(contacts))
+    // .catch(error => res.status(400).send(error));
   }
 
 };
