@@ -29,6 +29,7 @@ Adds a user to Users. Info needed in the body is:
 * username: string
 * email: string
 * user_password: string
+
 ----
 POST /login
 
@@ -39,6 +40,7 @@ Returns a token and your info. Info needed in the body is:
 * username: string
 * email: string
 * user_password: string
+
 ----
 POST /submitLink
 
@@ -48,10 +50,12 @@ Puts a link on the page for all your friends to comment on. Info needed in the b
 
 * title: string
 * destination_url: string
+
 ----
 GET /retrieveALL
 
 Returns all of the links, the most recently posted first. No info needed.
+
 ----
 POST /comment
 
@@ -61,6 +65,7 @@ Adds a comment to an existing link. Info needed in the body:
 
 * link_id: number
 * text: what you want to say
+
 ----
 POST /retrieveComments
 
