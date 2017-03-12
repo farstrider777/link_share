@@ -1,5 +1,6 @@
 const Users = require("../models").Users;
 const Links = require("../models").Links;
+const Comments = require("../models").Comments;
 const bcrypt = require("bcryptjs");
 const jwt = require("jwt-simple");
 const appSecrets = require("../config/secrets");
@@ -66,16 +67,29 @@ module.exports = {
     Links.create({
     title: req.body.title,
     destination_url: req.body.destination_url,
-
-
     user_id: userId,
     //user_password: req.body.user_password,
-  })
+    })
     .then(contacts => res.status(201).send(contacts))
     .catch(error => res.status(400).send(error));
   },
 
+  comment (req, res){
+    var token = req.headers['access-token'];
+    var decoded = jwt.decode(token, appSecrets.jwtSecret);
+    var userId = decoded.id;
+    Comments.create({
+      link_id: req.body.link_id,
+      user_id: userId,
+      text: req.body.text
+    })
+    .then(contacts => res.status(201).send(contacts))
+    .catch(error => res.status(400).send(error));
+  }
+
 };
+
+
 
   // module.exports = {
   //   create (req, res) {
