@@ -1,7 +1,7 @@
 const jwt = require("jwt-simple");
 const appSecrets = require("../config/secrets");
-const User = require("../models/users");
-
+//const User = require("../models/users");
+const User = require("../models").User;
 
 module.exports = {
    authenticate (req, res, next) {
@@ -14,7 +14,7 @@ module.exports = {
               message: "Must be authenticated to use this route."
             });
           }
-      
+
           // Try to decode the token.
           try {
             var decoded = jwt.decode(token, appSecrets.jwtSecret);
@@ -35,6 +35,7 @@ module.exports = {
             });
 
           } catch (e) {
+            console.log(e);
             // Token was garbage. Tell 'em so.
             res.status(401).send({ message: "Invalid token." });
           }
