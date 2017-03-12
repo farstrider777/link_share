@@ -34,11 +34,8 @@ module.exports = {
              if (!user) {
                return res.status(401).send({ message: "No such email or wrong password." });
              }
-
-             console.log("hey" + user.user_salt);
              var input = bcrypt.hashSync(req.body.user_password, user.user_salt);
-             console.log(`hashed input: ${input}, stored password: ${user.user_password}`);
-            if (input === user.user_password) {
+             if (input === user.user_password) {
                var token = jwt.encode({ id: user.id, name: user.username }, appSecrets.jwtSecret);
                //return res.status(200).send(token);
                var json = {
@@ -59,8 +56,6 @@ module.exports = {
     .catch(error => res.status(400).send(error));
   },
 
-  //Model.findAll({ where: { age: { gt: 12 } } })
-
   submitLink (req, res){
     var token = req.headers['access-token'];
     var decoded = jwt.decode(token, appSecrets.jwtSecret);
@@ -72,7 +67,7 @@ module.exports = {
     user_id: userId,
     //user_password: req.body.user_password,
     })
-    .then(contacts => res.status(201).send(contacts))
+    .then(links => res.status(201).send(links))
     .catch(error => res.status(400).send(error));
   },
 
@@ -85,89 +80,16 @@ module.exports = {
       user_id: userId,
       text: req.body.text
     })
-    .then(contacts => res.status(201).send(contacts))
+    .then(comment => res.status(201).send(comment))
     .catch(error => res.status(400).send(error));
   },
 
   retrieveComments (req, res){
-    console.log("hello")
-    console.log(Comments.findById(req.params.link_id))
-    // .then(contacts => res.status(201).send(contacts))
-    // .catch(error => res.status(400).send(error));
+    Comments.findAll({where: {
+                      link_id: req.headers.link_id
+                    }})
+    .then(comments => res.status(201).send(comments))
+    .catch(error => res.status(400).send(error));
   }
 
 };
-
-
-
-  // module.exports = {
-  //   create (req, res) {
-  //    //res.status(200).send("Hello world!");
-  //       Contacts.create({
-  //       name: req.body.name,
-  //       phone_number: req.body.phone_number,
-  //       city: req.body.city,
-  //       state: req.body.state,
-  //       photo_url: req.body.photo_url,
-  //       email: req.body.email,
-  //     })
-  //     .then(contacts => res.status(201).send(contacts))
-  //     .catch(error => res.status(400).send(error));
-  //   },
-  //
-  //
-  //
-  //
-  //
-  //   listContacts (req, res) {
-  //       Contacts.findAll({
-  //         // where: {
-  //         //   id: req.params.id
-  //         // }
-  //       })
-  //       .then(contacts => res.status(201).send(contacts))
-  //       .catch(error => res.status(400).send(error));
-  //     },
-  //
-  //   listOneContact (req, res) {
-  //       Contacts.findById(req.params.id)
-  //       .then(contacts => res.status(201).send(contacts))
-  //       .catch(error => res.status(400).send(error));
-  //     },
-  //
-  //
-  //
-  //
-  //
-  //     updateContact (req, res) {
-  //
-  //         Contacts.update({
-  //           name: req.body.name || Contacts.name,
-  //           phone_number: req.body.phone_number || Contacts.phone_number,
-  //           city: req.body.city || Contacts.city,
-  //           state: req.body.state || Contacts.state,
-  //           photo_url: req.body.photo_url || Contacts.photo_url,
-  //           email: req.body.email || Contacts.email,
-  //         }, {where: {
-  //                     id:req.params.id
-  //                   }
-  //           })
-  //         .then(contacts => res.status(201).send(contacts))
-  //         .catch(error => res.status(400).send(error));
-  //       },
-  //
-  //
-  //
-  //
-  //     deleteContact (req, res) {
-  //       Contacts.destroy({
-  //       //  name: req.body.name || Contacts.name
-  //        where: {
-  //                   id:req.params.id
-  //               }
-  //         })
-  //       .then(contacts => res.status(201).send(contacts))
-  //       .catch(error => res.status(400).send(error));
-  //     }
-  //
-  // };
